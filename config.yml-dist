@@ -44,3 +44,8 @@ plugin:
 #            time: "11:30"
 #            chan: "#viby"
 #            msg : "@all meeting"
+#    Stack:
+#        redmine_api_key: ...
+#        redmine_url: http://....
+#        aliases:
+#            Benoit: alk
