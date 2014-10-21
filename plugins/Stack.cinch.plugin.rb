@@ -12,14 +12,12 @@ class Stack
          "X-Redmine-API-Key" => config['redmine_api_key'].to_s
         ).read
     text = JSON.parse(doc)['wiki_page']['text']
-    name = text.scan(/\* \d{4}-\d{2}-\d{2}: (\S*)/)[index.to_i]
-    if name
-        name = name[0]
-    end
+    matches = Hash[text.scan(/\* (\d{4}-\d{2}-\d{2}): (\S*)/)]
+    now = Time.now.strftime '%Y-%m-%d'
+    name = matches[now] || matches[matches.keys.first]
     if config.key? 'aliases' and config['aliases'].key? name
         name = config['aliases'][name]
     end
-    puts name
     m.reply "#{name}, it's your turn!"
   end
 end
