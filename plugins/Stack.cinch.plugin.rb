@@ -14,10 +14,28 @@ class Stack
     text = JSON.parse(doc)['wiki_page']['text']
     matches = Hash[text.scan(/\* (\d{4}-\d{2}-\d{2}): (\S*)/)]
     now = Time.now.strftime '%Y-%m-%d'
-    name = matches[now] || matches[matches.keys.first]
+    if index.nil?
+        if matches.key? now
+            key = now
+        else
+            key = matches.keys.first
+        end
+    else
+        index = index.to_i
+        if index >= 0 and index < matches.length
+            key = matches.keys[index]
+        else
+            m.reply "Nope."
+            return
+        end
+    end
+
+    name = matches[key]
+
     if config.key? 'aliases' and config['aliases'].key? name
         name = config['aliases'][name]
     end
-    m.reply "#{name}, it's your turn!"
+
+    m.reply "#{name}, it's your turn! (last time: #{key})"
   end
 end
